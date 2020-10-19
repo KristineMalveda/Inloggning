@@ -1,0 +1,23 @@
+#pane {
+  -fx-background-image: url("file:C:/Users/Kristine/Desktop/advanced-java/Inloggning/grit.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 200.0, 200.0;
+  -fx-background-position: center;
+  -fx-background-color: transparent;
+}
+
+
+
+
+.button{
+-fx-text-fill:#ffff;
+-fx-border-color:#ffff;
+-fx-background-color:black;
+}
+
+
+
+.label {
+-fx-background-color:#ffff;
+
+}
