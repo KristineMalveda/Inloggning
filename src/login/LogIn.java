@@ -10,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
@@ -26,6 +27,7 @@ public class LogIn extends Application {
 
 	String email;
 	String userPassword;
+	ComboBox<String> alt = new ComboBox<String>();
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -43,9 +45,9 @@ public class LogIn extends Application {
 		grid.setAlignment(Pos.CENTER);
 		grid.setHgap(10);
 		grid.setVgap(10);
-		grid.setPadding(new Insets(50, 50, 50, 50));
+		grid.setPadding(new Insets(20, 20, 20, 20));
 
-		Scene scene = new Scene(grid, 300, 300);
+		Scene scene = new Scene(grid, 300, 350);
 		scene.getStylesheets().addAll(this.getClass().getResource("application.css").toExternalForm());
 		primaryStage.setScene(scene);
 
@@ -53,18 +55,23 @@ public class LogIn extends Application {
 		dropShadow.setRadius(5.0);
 		dropShadow.setOffsetX(3.0);
 		dropShadow.setOffsetY(3.0);
-		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
+		dropShadow.setColor(Color.GRAY);
 
 		Text scenetitle = new Text("Log In");
-		grid.add(scenetitle, 0, 0, 2, 1);
+		grid.add(scenetitle, 0, 0, 3, 1);
 		scenetitle.setEffect(dropShadow);
 		scenetitle.setCache(true);
 		scenetitle.setFill(Color.web("0x3b596d"));
-		scenetitle.setFont(Font.font("Comic Sans", FontWeight.BOLD, 25));
+		scenetitle.setFont(Font.font("Trebuchet MS", FontWeight.BOLD, 25));
 
 		Label userEmail = new Label("E-post:");
 		userEmail.setId("label");
 		grid.add(userEmail, 0, 1);
+
+		alt.getItems().add("Regex");
+		alt.getItems().add("Email Validator");
+		alt.setValue("Validator");
+		grid.add(alt, 0, 4);
 
 		TextField userEmailTextField = new TextField("kristine@yahoo.com");
 		grid.add(userEmailTextField, 1, 1);
@@ -91,39 +98,43 @@ public class LogIn extends Application {
 			System.out.println("Button is clicked");
 			String email = userEmailTextField.getText();
 			String password = userPassword.getText();
-			boolean isValidEpost = isValidEmail(email);
+			boolean isValidEpost = isValidEmailUsingRegEx(email);
 			boolean isValidPass = isValidPassword(password);
 
-			if (isValidEpost && isValidPass) {
-				JOptionPane.showMessageDialog(null, "Given Email or Password is Valid!");
+			if (alt.getValue().equals("Regex")) {
+				if (isValidEpost && isValidPass) {
+					JOptionPane.showMessageDialog(null, "Welcome");
 
-			} else {
-				JOptionPane.showInternalMessageDialog(null, "Oh no! It is either Email or password is invalid! ");
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Oh no! It is either Email or password is invalid! ");
+				}
+				;
+
 			}
-			;
+
+			if (alt.getValue().equals("Email Validator")) {
+				if (EmailValidatorApache.isValidUsingValidator(email) && isValidPass) {
+					JOptionPane.showMessageDialog(null, "Welcome");
+
+				} else {
+					JOptionPane.showInternalMessageDialog(null, "Oh no! It is either Email or password is invalid! ");
+				}
+				;
+			}
 
 		});
 
 	}
 
-	public boolean isValidEmail(String email) {
+	public boolean isValidEmailUsingRegEx(String email) {
 		// Regular expression to accept valid email id
 		String regex = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
 		// Creating a pattern object
 		Pattern pattern = Pattern.compile(regex);
 		// Creating a Matcher object
 		Matcher matcher = pattern.matcher(email);
-		boolean isValid = false;
 
-		EmailValidatorApache emailvalidator = new EmailValidatorApache();
-
-		if (emailvalidator.isValid(email) || matcher.matches()) {
-			isValid= true;
-		} else {
-			isValid=false;
-		}
-
-		return isValid;
+		return matcher.matches();
 	}
 
 	public boolean isValidPassword(String pass) {
