@@ -26,7 +26,7 @@ public class LogIn extends Application {
 
 	String email;
 	String userPassword;
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 		// Application Stage
@@ -93,16 +93,9 @@ public class LogIn extends Application {
 			String password = userPassword.getText();
 			boolean isValidEpost = isValidEmail(email);
 			boolean isValidPass = isValidPassword(password);
-			
-			
-
-			//EmailValidatorApache emailvalidator = new EmailValidatorApache();
-
-			//boolean isValidEpostAlt = emailvalidator.isValid(email);
 
 			if (isValidEpost && isValidPass) {
 				JOptionPane.showMessageDialog(null, "Given Email or Password is Valid!");
-				
 
 			} else {
 				JOptionPane.showInternalMessageDialog(null, "Oh no! It is either Email or password is invalid! ");
@@ -120,7 +113,17 @@ public class LogIn extends Application {
 		Pattern pattern = Pattern.compile(regex);
 		// Creating a Matcher object
 		Matcher matcher = pattern.matcher(email);
-		return matcher.matches();
+		boolean isValid = false;
+
+		EmailValidatorApache emailvalidator = new EmailValidatorApache();
+
+		if (emailvalidator.isValid(email) || matcher.matches()) {
+			isValid= true;
+		} else {
+			isValid=false;
+		}
+
+		return isValid;
 	}
 
 	public boolean isValidPassword(String pass) {
