@@ -103,7 +103,8 @@ public class LogIn extends Application {
 
 			if (alt.getValue().equals("Regex")) {
 				if (isValidEpost && isValidPass) {
-					JOptionPane.showMessageDialog(null, "Welcome");
+					JOptionPane.showMessageDialog(null, "Welcome! You have just logged in");
+					
 
 				} else {
 					JOptionPane.showInternalMessageDialog(null, "Oh no! It is either Email or password is invalid! ");
@@ -114,7 +115,7 @@ public class LogIn extends Application {
 
 			if (alt.getValue().equals("Email Validator")) {
 				if (EmailValidatorApache.isValidUsingValidator(email) && isValidPass) {
-					JOptionPane.showMessageDialog(null, "Welcome");
+					JOptionPane.showMessageDialog(null, "Welcome! You have just logged in");
 
 				} else {
 					JOptionPane.showInternalMessageDialog(null, "Oh no! It is either Email or password is invalid! ");
